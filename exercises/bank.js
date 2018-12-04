@@ -1,51 +1,80 @@
 
 
 class Bank{
-	constructor(){
-		//takes in the name of the bank.
-		//makes an object to store all accounts into
+	constructor(name){
+    //takes in the name of the bank.
+    this.name = name;
+    //makes an object to store all accounts into
+    this.accounts = {};
 	}
-	makeAccount( ){
+	makeAccount(accountNumber){
 		//makes an account
 		//takes in the account number of an account
 		//checks if the account number already exists in the account storage object in the constructor
-			//if already exists, returns false
+      //if already exists, returns false
+    if (this.accounts[accountNumber]) {
+      return false;
+    } 
 		//otherwise makes an new Account object, storing it into the storage object in the constructor
-		//returns the Account object that was constructed
+    //returns the Account object that was constructed
+    return this.accounts[accountNumber] = new Account();
 	}
-	checkForAccount(  ){
+  checkForAccount(accountNumber){
 		//checks if an account exists or not
 		//takes in the account number of an account
 		//returns false if the account does not exist in the accounts object from the constructor
-		//returns true if the account does exist
+    //returns true if the account does exist
+    return !!this.accounts[accountNumber];
 	}
-	removeAccount(  ){
+  removeAccount(accountNumber){
 		//removes an account
 		//takes in an account number
 		//if the account doesn't exist, returns
-			//"account <accountNumber> does not exist" where accountNumber is the account number
+      //"account <accountNumber> does not exist" where accountNumber is the account number
+    if (!this.checkForAccount(accountNumber)) {
+      return `account ${accountNumber} does not exist`;
+    }
+
 		//if the account is not empty, returns
-			//'account is not empty'
+      //'account is not empty'
+    if (this.accounts[accountNumber].getAmount()) {
+      return 'account is not empty';
+    }
 		//otherwise deletes the account from the constructor storage
 		//returns 
-			'account <accountNumber> deleted'
-
+    delete this.accounts[accountNumber];
+    return `account ${accountNumber} deleted`;
 	}
-	deposit( ){
+	deposit(accountNumber, amount){
 		//deposits money into an account
 		//takes in an account number and a numeric amount
 		//if the account doesn't exist, returns
-			//'account does not exist'
+      //'account does not exist'
+    if (!this.checkForAccount(accountNumber)) {
+      return 'account does not exist';
+    }
+
 		//otherwise uses the account's add method and adds to the account
 			//returns
-			//"account <accountNumber> now has <new account amount>
+      //"account <accountNumber> now has <new account amount>
+    this.accounts[accountNumber].add(amount);
+    return `account ${accountNumber} now has ${amount}`;
 	}
 	withdraw( accountNumber, amount ){
 		//removes money from an account
 		//takes in an account number and an amount
 		//checks if the account exists, if not
-			//return 'account does not exist'
+      //return 'account does not exist'
+    if (!this.checkForAccount(accountNumber)) {
+      return 'account does not exist';
+    }
+
 		//uses the Account's remove method to withdraw funds from the account
 		//returns "removed <amount withdrawn> from account <account number>. It now has <remaining amount in account>"
-	}
+    const account = this.accounts[accountNumber]
+    const removed = account.remove(amount);
+    const remaining = account.getAmount();
+
+    return `removed ${removed} from account ${accountNumber}. It now has ${remaining}`;
+  }
 }

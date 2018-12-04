@@ -16,7 +16,7 @@ function featureSet1(){
 		displayMessage('randomGenerator object does not exist.  Check exercises/randomgenerator.js and make sure the object is defined still.');
 		return false;
 	}
-	var gen = new RandomGenerator(0, 20);
+  var gen = new RandomGenerator(0, 20);
 	if(gen.getRange === undefined){
 		displayMessage('missing method "getRange" in randomGenerator');
 		return false;
